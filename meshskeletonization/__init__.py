@@ -26,7 +26,7 @@ bl_info = {
     "name": "Mesh Skeletonization",
     "description": "Mesh Skeletonization by Laplacian Contraction",
     "author": "Srinivasan Ramachandran",
-    "version": (2, 0, 0),
+    "version": (1, 0, 0),
     "blender": (2, 76, 0),
     "location": "View3D",
     "warning": "This addon is still in development.",
