@@ -10,9 +10,9 @@ The plugin is still under development. As of now only the mesh contraction step 
 Dependency python packages
 --------------------------
 
-Markup : * BPY module (Blender python environment)
-		 * Numpy
-         * Scipy
+ Markup : * BPY module (Blender python environment)
+		  * Numpy
+          * Scipy
 
 Usage
 -----
