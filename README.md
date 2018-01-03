@@ -13,3 +13,10 @@ Dependency python packages
 Markup : * BPY module (Blender python environment)
 		 * Numpy
          * Scipy
+
+Usage
+-----
+
+Install the plugin or copy the folder **meshskeletonization** inside the Blender addons folder. Then activate the plugin through Blender user interface. Once enabled you should be able to see a tab named **Mesh Skeletonization** in the tools panel.
+
+
