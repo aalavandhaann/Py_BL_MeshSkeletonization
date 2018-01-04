@@ -29,9 +29,9 @@ def meshContraction(c, m, iterations=10, SL=10.0, WC=10.0):
     WL0 = sp.sparse.dia_matrix(np_WL0);
     
     try:
-        dm = c.scene.objects[m.name+"_skeleton_"+str(iterations)];
+        dm = c.scene.objects[m.name+"_skel_It"+str(iterations)+"_SL"+str(SL)+"_WC"+str(WC)];
     except KeyError:
-        dm = getDuplicatedObject(c, m, m.name+"_skeleton_"+str(iterations));
+        dm = getDuplicatedObject(c, m, m.name+"_skel_It"+str(iterations)+"_SL"+str(SL)+"_WC"+str(WC));
     
     bpy.ops.object.select_all(action="DESELECT");
     dm.select = True;

@@ -19,4 +19,6 @@ Usage
 
 Install the plugin or copy the folder **meshskeletonization** inside the Blender addons folder. Then activate the plugin through Blender user interface. Once enabled you should be able to see a tab named **Mesh Skeletonization** in the tools panel.
 
+Play around the following parameters and press ** Mesh Contraction ** for the contraction process. Depending on the mesh resolution and supplied parameters expect the time delay for the process to complete. Once the mesh contraction is complete you should find the contracted mesh (with almost zero volume) duplicated alongside the original mesh. The name of the contracted mesh will be a combination of the original mesh name concatenated with the parameter values you supplied. 
 
+# Have Fun
