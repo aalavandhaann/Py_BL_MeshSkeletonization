@@ -32,6 +32,6 @@ Notes
 
 - It is necessary to triangulate the mesh in Blender, otherwise results are going to be crazy
 - Except the linear systems solved to take some time as it uses numpy and scipy
-
+- If someone can help me with other steps, wow, greatly appreciated. Maybe I can help in some way back.
 
 # Have Fun
