@@ -3,6 +3,35 @@ import numpy as np;
 import scipy as sp;
 import scipy.sparse as spsp;
 
+from mathutils import Vector;
+
+#Return object bounds as minvector and maxvector
+def getObjectBounds(mesh):
+    minx = miny = minz = 9999999999999999;
+    maxx = maxy = maxz = -9999999999999999;    
+    bounds = [Vector(b) for b in mesh.bound_box];
+
+    xvalues = [b.x for b in bounds];
+    yvalues = [b.y for b in bounds];
+    zvalues = [b.z for b in bounds];
+    
+    minx = min(xvalues);
+    maxx = max(xvalues);
+
+    miny = min(yvalues);
+    maxy = max(yvalues);
+
+    minz = min(zvalues);
+    maxz = max(zvalues);
+    
+    return Vector((min(xvalues), min(yvalues), min(zvalues))), Vector((max(xvalues), max(yvalues),  max(zvalues)));
+
+def getBBox(m):
+    min_coords, max_coords = getObjectBounds(m);
+    dimensionvector = max_coords - min_coords;
+    diameter = dimensionvector.length;
+    return min_coords, max_coords, diameter;
+
 def meanCurvatureLaplaceWeights(context, mesh, symmetric = False, normalized=False):
     start = time.time();
     

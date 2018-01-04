@@ -1,5 +1,6 @@
 import bpy;
 from meshskeletonization.helpers.meshcontraction import meshContraction
+from meshskeletonization.helpers.utilities import getBBox
 
 #The operator for doing the Joint Fairing step
 class MeshContractionByLaplacian(bpy.types.Operator):
@@ -17,6 +18,8 @@ class MeshContractionByLaplacian(bpy.types.Operator):
             mesh = context.active_object;
         
         if(mesh is not None):
+            min_coords, max_coords, diameter = getBBox(mesh);
+            sample_radius = diameter*0.02;
             dmesh = meshContraction(context, mesh, iterations=mesh.iterations, SL=mesh.sl, WC=mesh.wc);
             self.report({'INFO'}, "Mesh contraction finished successfully");
             return {'FINISHED'};
