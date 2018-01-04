@@ -25,7 +25,7 @@ In short:-
 
 - Select the mesh object in **Object Mode**
 - Press **Mesh Skeletonization**
-- You should see a duplicated mesh
+- You should see a duplicated mesh that is contracted
 
 Notes
 -----
