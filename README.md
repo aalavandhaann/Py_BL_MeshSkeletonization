@@ -21,4 +21,17 @@ Install the plugin or copy the folder **meshskeletonization** inside the Blender
 
 Play around the following parameters and press ** Mesh Contraction ** for the contraction process. Depending on the mesh resolution and supplied parameters expect the time delay for the process to complete. Once the mesh contraction is complete you should find the contracted mesh (with almost zero volume) duplicated alongside the original mesh. The name of the contracted mesh will be a combination of the original mesh name concatenated with the parameter values you supplied. 
 
+In short:-
+
+- Select the mesh object in **Object Mode**
+- Press **Mesh Skeletonization**
+- You should see a duplicated mesh
+
+Notes
+-----
+
+- It is necessary to triangulate the mesh in Blender, otherwise results are going to be crazy
+- Except the linear systems solved to take some time as it uses numpy and scipy
+
+
 # Have Fun
