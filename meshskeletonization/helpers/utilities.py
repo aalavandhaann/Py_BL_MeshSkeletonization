@@ -1,4 +1,4 @@
-import bpy, bmesh, time;
+import bpy, bmesh, time, mathutils;
 import numpy as np;
 import scipy as sp;
 import scipy.sparse as spsp;
@@ -213,3 +213,98 @@ def getOneRingAreas(c, mesh):
         
     bm.free();    
     return np.array(oneringareas);
+
+
+
+#Can be of kd_type, 1-VERT, 2-EDGE, 3-FACE, 4-FACEVERT (contains vertices co with face Index)
+#5-EDGEVERT (contains vertices co with EDGE INDEX)
+def buildKDTree(context, meshobject, kd_type="VERT", points=[], use_bm =None,*, return_points = False):
+#     print('BUILDING KDTREE FOR ', object.name);
+    if(meshobject):
+        mesh = meshobject.data;
+        data = [];    
+    if(kd_type == "VERT"):
+        size = len(mesh.vertices);
+        kd = mathutils.kdtree.KDTree(size);
+        for i, v in enumerate(mesh.vertices):
+            kd.insert(v.co, v.index);
+    elif(kd_type =="EDGE"):
+        subdivisions = 3;
+        subdivisionsF = 3.0;
+        size = len(mesh.edges) * subdivisions;
+        edge_points = [];
+        kd = mathutils.kdtree.KDTree(size);
+        
+        for i, e in enumerate(mesh.edges):
+            v0 = mesh.vertices[e.vertices[0]].co;
+            v1 = mesh.vertices[e.vertices[1]].co;
+            vect = (v1 - v0);
+            
+            for i in range(subdivisions):
+                ratio = float(i) / (subdivisionsF - 1.0);
+                point = v0 + (vect * ratio);
+                kd.insert(point, e.index);
+                edge_points.append({'index':e.index, 'co':point});
+                
+        if(return_points):
+            kd.balance();
+            return kd, edge_points;
+        
+        
+    elif(kd_type =="FACE"):
+        size = len(mesh.polygons);
+        kd = mathutils.kdtree.KDTree(size);
+        oneby3 = 1.0 / 3.0;
+        loops = meshobject.data.loops;
+        vertices = meshobject.data.vertices;
+        
+        for i, f in enumerate(mesh.polygons):
+                        
+#             v0 = vertices[loops[f.loop_indices[0]].vertex_index].co;
+#             v1 = vertices[loops[f.loop_indices[1]].vertex_index].co;
+#             v2 = vertices[loops[f.loop_indices[2]].vertex_index].co;
+            
+#             point = (v0 * oneby3) + (v1 * oneby3) + (v2 * oneby3);
+            kd.insert(f.center.copy(), f.index);
+#             point, mat = getCentroid([v0, v1, v2]);
+#             kd.insert(mat * point, f.index);
+    
+    elif(kd_type == "FACEVERT"):
+        size = len(mesh.polygons) * 3;
+        kd = mathutils.kdtree.KDTree(size);
+
+        for i, f in enumerate(mesh.polygons):
+            if(len(f.loop_indices) > 3):
+                print('GOTCHA :: THE BLACK SHEEP ::: ', object.name, f.index);
+            for ind in f.loop_indices:
+                l = mesh.loops[ind];
+                v = mesh.vertices[l.vertex_index];
+                kd.insert(v.co, f.index);            
+    
+    elif(kd_type == "CUSTOM"):
+        size = len(points);
+        kd = mathutils.kdtree.KDTree(size);
+        useDict = True;
+        try:
+            index = points[0]['index'];
+        except KeyError:            
+            useDict = False;
+        except TypeError:
+            useDict = False;
+        except IndexError:
+            useDict = False;
+        
+        for i, point in enumerate(points):
+            if(useDict):
+                index = point['index'];
+                co = point['co'];
+                kd.insert(co, index);
+            else:
+                kd.insert(point, i);          
+                
+    kd.balance();
+#     print('BUILD KD TREE OF SIZE : ', size, ' FOR :: ', object.name, ' USING TYPE : ', kd_type);
+    return kd;
+
+
+
