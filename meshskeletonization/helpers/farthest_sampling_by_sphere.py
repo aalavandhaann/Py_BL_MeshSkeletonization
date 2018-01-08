@@ -10,7 +10,7 @@ def farthest_sampling_by_sphere(context, mesh, radius):
     mindst[:] = np.nan;
     pts = getMeshVPos(mesh);
     for k in range(n):
-        vco = mesh.data.vertices[k];
+        vco = mesh.data.vertices[k].co;
         
         if(corresp[k] != 0.0):
             continue;
@@ -27,14 +27,13 @@ def farthest_sampling_by_sphere(context, mesh, radius):
             valuesInRange = kdtree.find_range(vco, radius);
             if(len(valuesInRange)):
                 valuesInRange = np.array(valuesInRange);
-                nIdxs, nDsts = valuesInRange[:,1], valuesInRange[:,2];
-                if(np.all(corresp[nIdxs] !=0.0)):
+                nIdxs, nDsts = valuesInRange[:,1].flatten().tolist() , valuesInRange[:,2].flatten().tolist();
+                if(np.all(corresp[nIdxs] != 0.0)):
                     mindst[maxIdx] = 0.0;
                     continue;
             
-            
                 spls = np.append(spls, [pts[maxIdx,:]]);
-                for i in range(nIdxs):
+                for i in range(len(nIdxs)):
                     if(mindst[nIdxs[i]] > nDsts[i] or np.isnan(mindst[nIdxs[i]])):
                         mindst[nIdxs[i]] = nDsts[i];
                         corresp[nIdxs[i]] = spls.shape[0];
